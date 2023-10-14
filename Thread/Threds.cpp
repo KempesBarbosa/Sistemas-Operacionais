@@ -11,7 +11,7 @@ typedef struct {
     cv::Mat Gy;
 } ThreadArgs;
 
-// Função para calcular a borda na direção x
+// FunÃ§Ã£o para calcular a borda na direÃ§Ã£o x
 void* calcular_borda_x(void* arguments) {
     ThreadArgs* args = (ThreadArgs*)arguments;
     cv::Mat imagem = args->imagem;
@@ -29,7 +29,7 @@ void* calcular_borda_x(void* arguments) {
     pthread_exit(NULL);
 }
 
-// Função para calcular a borda na direção y
+// FunÃ§Ã£o para calcular a borda na direÃ§Ã£o y
 void* calcular_borda_y(void* arguments) {
     ThreadArgs* args = (ThreadArgs*)arguments;
     cv::Mat imagem = args->imagem;
@@ -50,13 +50,13 @@ void* calcular_borda_y(void* arguments) {
 int main(int argc, char** argv) {
     char diretorio[500]; 
 
-    std::cout << "Digite o endereço da imagem: " << std::endl;
+    std::cout << "Digite o endereÃ§o da imagem: " << std::endl;
     std::cin >> diretorio;
 
     cv::Mat imagem_cinza = cv::imread(diretorio, cv::IMREAD_GRAYSCALE);
 
     if (imagem_cinza.empty()) {
-        printf("Não foi possível ler a imagem\n");
+        printf("NÃ£o foi possÃ­vel ler a imagem\n");
         return -1;
     }
 
@@ -69,20 +69,21 @@ int main(int argc, char** argv) {
     // Inicializar as threads
     pthread_t thread_x, thread_y;
 
-    // Calcular as bordas nas direções x e y
+    // Calcular as bordas nas direÃ§Ãµes x e y
     pthread_create(&thread_x, NULL, calcular_borda_x, (void*)&thread_args);
     pthread_create(&thread_y, NULL, calcular_borda_y, (void*)&thread_args);
 
-    // Aguardar o término das threads
+    // Aguardar o tÃ©rmino das threads
     pthread_join(thread_x, NULL);
     pthread_join(thread_y, NULL);
 
-    // Calcular a imagem de saída G
+    // Calcular a imagem de saÃ­da G
     cv::Mat imagem_saida;
     cv::add(Gx, Gy, imagem_saida);
 
-    // Exibir a imagem de saída
-    cv::imshow("Imagem de Saída", imagem_saida);
+    // Exibir a imagem de saÃ­da
+    cv::imshow("Imagem de SaÃ­da", imagem_saida);
+    cv::imwrite("ImagemSaida.png", imagem_saida);
     cv::waitKey(0);
 
     return 0;
